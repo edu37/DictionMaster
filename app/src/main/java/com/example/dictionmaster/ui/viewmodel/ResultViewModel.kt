@@ -1,5 +1,6 @@
 package com.example.dictionmaster.ui.viewmodel
 
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -41,19 +42,6 @@ class ResultViewModel @Inject constructor(
 
     private suspend fun safeFetch(language: String, word: String) {
         try {
-//            if (responseDefinition.isSuccessful) {
-//                mDefinition.value =
-//                    handleDefinitionResponse(responseDefinition.body()!!.results[0].lexicalEntries[0].entries[0].senses)
-//            }
-//            if (responseExample.isSuccessful) {
-//                mExamples.value =
-//                    handleExampleResponse(responseExample.body()!!.results[0].lexicalEntries[0].entries[0].senses[0].examples)
-//            }
-//            if (responsePronunciation.isSuccessful) {
-//                mPronunciation.value =
-//                    handlePronunciationResponse(responsePronunciation.body()!!.results[0].lexicalEntries[0].entries[0].pronunciations)
-//            }
-            //mData.value = handleResponse(response)
             val response = repository.getData(language, word)
             mData.value = handleResponse(response)
         } catch (t: Throwable) {
@@ -65,18 +53,6 @@ class ResultViewModel @Inject constructor(
                 else -> mData.value = ResourceState.Error("Falha na conversão de dados")
             }
         }
-    }
-
-    private fun handlePronunciationResponse(pronunciations: List<Pronunciations>): ResourceState<List<Pronunciations>> {
-        return ResourceState.Success(pronunciations)
-    }
-
-    private fun handleDefinitionResponse(sense: List<Sense>): ResourceState<List<Sense>> {
-        return ResourceState.Success(sense)
-    }
-
-    private fun handleExampleResponse(examples: List<Examples>): ResourceState<List<Examples>> {
-        return ResourceState.Success(examples)
     }
 
     private fun handleResponse(response: Response<APIModelResponse>): ResourceState<APIModelResponse> {

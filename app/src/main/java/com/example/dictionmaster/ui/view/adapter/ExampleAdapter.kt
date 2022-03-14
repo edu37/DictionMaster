@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dictionmaster.databinding.ItemExampleAndDefinitionBinding
+import com.example.dictionmaster.databinding.ItemviewBinding
 import com.example.dictionmaster.service.models.Examples
 
 class ExampleAdapter : RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder>() {
-    inner class ExampleViewHolder(val binding: ItemExampleAndDefinitionBinding) :
+    inner class ExampleViewHolder(val binding: ItemviewBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     private val differCallBack = object : DiffUtil.ItemCallback<Examples>() {
@@ -30,7 +30,7 @@ class ExampleAdapter : RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder>() 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExampleViewHolder {
         return ExampleViewHolder(
-            ItemExampleAndDefinitionBinding.inflate(
+            ItemviewBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )

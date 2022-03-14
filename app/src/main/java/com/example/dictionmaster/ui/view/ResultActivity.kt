@@ -69,12 +69,13 @@ class ResultActivity : AppCompatActivity() {
         binding.textWord.text = word.uppercase()
     }
 
-    private fun setupCollect() = lifecycleScope.launchWhenStarted {
+    private fun setupCollect() = lifecycleScope.launchWhenCreated {
         mViewMoldel.data.collect { resource ->
             when (resource) {
                 is ResourceState.Success -> {
                     resource.data?.let {
                         mExampleAdapter.examples = it.results[0].lexicalEntries[0].entries[0].senses[0].examples
+                        mDefinitionAdapter.sense = it.results[0].lexicalEntries[0].entries[0].senses
                     }
                 }
                 is ResourceState.Error -> {
@@ -86,11 +87,11 @@ class ResultActivity : AppCompatActivity() {
                 else -> {}
             }
         }
-        mViewMoldel.data.collect { resource ->
+        mViewMoldel.definition.collect { resource ->
             when (resource) {
                 is ResourceState.Success -> {
                     resource.data?.let {
-                        mDefinitionAdapter.definitions = it.results[0].lexicalEntries[0].entries[0].senses[0].definitions
+                        //mDefinitionAdapter.definitions = it
                     }
                 }
                 is ResourceState.Error -> {

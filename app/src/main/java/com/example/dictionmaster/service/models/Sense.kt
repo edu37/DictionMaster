@@ -6,7 +6,7 @@ import java.io.Serializable
 data class Sense(
 
     @SerializedName("definitions")
-    val definitions: List<Definitions>,
+    val definitions: List<String>,
 
     @SerializedName("examples")
     val examples: List<Examples>

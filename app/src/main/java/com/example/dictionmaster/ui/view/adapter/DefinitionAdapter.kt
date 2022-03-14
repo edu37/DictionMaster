@@ -5,33 +5,33 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dictionmaster.databinding.ItemExampleAndDefinitionBinding
-import com.example.dictionmaster.service.models.Definitions
+import com.example.dictionmaster.databinding.ItemviewBinding
+import com.example.dictionmaster.service.models.Sense
 
 class DefinitionAdapter : RecyclerView.Adapter<DefinitionAdapter.DefinitionViewHolder>() {
-    inner class DefinitionViewHolder(val binding: ItemExampleAndDefinitionBinding) :
+    inner class DefinitionViewHolder(val binding: ItemviewBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    private val differCallBack = object : DiffUtil.ItemCallback<Definitions>() {
-        override fun areItemsTheSame(oldItem: Definitions, newItem: Definitions): Boolean {
+    private val differCallBack = object : DiffUtil.ItemCallback<Sense>() {
+        override fun areItemsTheSame(oldItem: Sense, newItem: Sense): Boolean {
             return oldItem.hashCode() == newItem.hashCode()
         }
 
-        override fun areContentsTheSame(oldItem: Definitions, newItem: Definitions): Boolean {
-            return oldItem.text == newItem.text
+        override fun areContentsTheSame(oldItem: Sense, newItem: Sense): Boolean {
+            return oldItem == newItem
         }
 
     }
 
     private val differ = AsyncListDiffer(this, differCallBack)
 
-    var definitions: List<Definitions>
+    var sense: List<Sense>
         get() = differ.currentList
         set(value) = differ.submitList(value)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefinitionViewHolder {
         return DefinitionViewHolder(
-            ItemExampleAndDefinitionBinding.inflate(
+            ItemviewBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )
@@ -39,11 +39,11 @@ class DefinitionAdapter : RecyclerView.Adapter<DefinitionAdapter.DefinitionViewH
 
     override fun onBindViewHolder(holder: DefinitionViewHolder, position: Int) {
         holder.binding.apply {
-            val definition = definitions[position]
-            textData.text = definition.text
+            val definition = sense[position].definitions[0]
+            textData.text = definition
 
         }
     }
 
-    override fun getItemCount(): Int = definitions.size
+    override fun getItemCount(): Int = sense.size
 }

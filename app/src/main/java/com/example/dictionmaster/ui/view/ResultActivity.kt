@@ -4,6 +4,7 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -38,27 +39,13 @@ class ResultActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.hide()
 
+
         loadData()
         setupRecycler()
         setupCollect()
 
         setupButtons()
 
-    }
-
-    private fun setupButtons() {
-        binding.audioPronunciation.setOnClickListener {
-            try {
-                player = MediaPlayer().apply {
-                    setAudioStreamType(AudioManager.STREAM_MUSIC)
-                    setDataSource(audioFile)
-                    prepare()
-                    start()
-                }
-            }catch (e:Exception){
-                e.printStackTrace()
-            }
-        }
     }
 
     private fun loadData() {
@@ -69,52 +56,58 @@ class ResultActivity : AppCompatActivity() {
         binding.textWord.text = word.uppercase()
     }
 
-    private fun setupCollect() = lifecycleScope.launchWhenCreated {
+    private fun setupButtons() {
+        binding.audioPronunciation.setOnClickListener {
+            try {
+                player = MediaPlayer()
+                player.setAudioStreamType(AudioManager.STREAM_MUSIC)
+                player.setDataSource(audioFile)
+
+                player.prepare()
+                player.start()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        binding.buttonSearch.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun setupCollect() = lifecycleScope.launchWhenStarted {
         mViewMoldel.data.collect { resource ->
             when (resource) {
                 is ResourceState.Success -> {
                     resource.data?.let {
-                        mExampleAdapter.examples = it.results[0].lexicalEntries[0].entries[0].senses[0].examples
+                        mExampleAdapter.examples =
+                            it.results[0].lexicalEntries[0].entries[0].senses[0].examples
                         mDefinitionAdapter.sense = it.results[0].lexicalEntries[0].entries[0].senses
+                        binding.textPronunciation.text =
+                            it.results[0].lexicalEntries[0].entries[0].pronunciations[0].phoneticSpelling
+                        audioFile =
+                            it.results[0].lexicalEntries[0].entries[0].pronunciations[0].audioFile
+                        binding.progressCircular.visibility = View.GONE
+
+                        binding.textWord.visibility = View.VISIBLE
+                        binding.cardviewDefinition.visibility = View.VISIBLE
+                        binding.cardviewExample.visibility = View.VISIBLE
+                        binding.cardviewPronunciation.visibility = View.VISIBLE
+                        binding.buttonSearch.visibility = View.VISIBLE
                     }
                 }
                 is ResourceState.Error -> {
-                    resource.data?.let {
-                        Toast.makeText(applicationContext, "Um erro ocorreu", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                    Toast.makeText(applicationContext, "Um erro ocorreu", Toast.LENGTH_SHORT)
+                        .show()
+                    binding.progressCircular.visibility = View.GONE
+                    finish()
                 }
-                else -> {}
-            }
-        }
-        mViewMoldel.definition.collect { resource ->
-            when (resource) {
-                is ResourceState.Success -> {
-                    resource.data?.let {
-                        //mDefinitionAdapter.definitions = it
-                    }
-                }
-                is ResourceState.Error -> {
-                    resource.data?.let {
-                        Toast.makeText(applicationContext, "Um erro ocorreu", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
-                else -> {}
-            }
-        }
-        mViewMoldel.pronunciation.collect { resource ->
-            when (resource) {
-                is ResourceState.Success -> {
-                    resource.data?.let {
-                        binding.textPronunciation.text = it[0].phoneticSpelling
-                        audioFile = it[0].audioFile
-                    }
-                }
-                is ResourceState.Error -> {
-                    resource.data?.let {
-                        Toast.makeText(applicationContext, "Um erro ocorreu", Toast.LENGTH_SHORT).show()
-                    }
+                is ResourceState.Loading -> {
+                    binding.progressCircular.visibility = View.VISIBLE
+                    binding.textWord.visibility = View.GONE
+                    binding.cardviewDefinition.visibility = View.GONE
+                    binding.cardviewExample.visibility = View.GONE
+                    binding.cardviewPronunciation.visibility = View.GONE
+                    binding.buttonSearch.visibility = View.GONE
                 }
                 else -> {}
             }

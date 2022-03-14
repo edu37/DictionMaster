@@ -43,5 +43,5 @@ class ExampleAdapter : RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder>() 
         }
     }
 
-    override fun getItemCount(): Int = examples.size
+    override fun getItemCount(): Int = if (examples.size > 3) 3 else examples.size
 }

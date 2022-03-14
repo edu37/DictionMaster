@@ -38,12 +38,19 @@ class DefinitionAdapter : RecyclerView.Adapter<DefinitionAdapter.DefinitionViewH
     }
 
     override fun onBindViewHolder(holder: DefinitionViewHolder, position: Int) {
-        holder.binding.apply {
-            val definition = sense[position].definitions[0]
-            textData.text = definition
 
+        holder.binding.apply {
+            try {
+                if (sense[position].definitions[0].isNotEmpty())
+                    textData.text = sense[position].definitions[0]
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
-    override fun getItemCount(): Int = sense.size
+    override fun getItemCount(): Int {
+
+        return sense.size
+    }
 }

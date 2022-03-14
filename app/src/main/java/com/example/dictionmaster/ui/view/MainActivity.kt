@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fabOpen: Animation
     private lateinit var fabClose: Animation
 
-    private var mLanguage= ""
+    private var mLanguage = ""
     private var mWord: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,10 +49,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun setupCollect() = lifecycleScope.launchWhenStarted{
-            viewModel.language.collect {
-                mLanguage = it
-            }
+    private fun setupCollect() = lifecycleScope.launchWhenStarted {
+        viewModel.language.collect {
+            mLanguage = it
+        }
     }
 
     private fun setupSearch() {
@@ -65,8 +65,7 @@ class MainActivity : AppCompatActivity() {
                 bundle.putString(Constants.WORD, mWord)
                 intent.putExtras(bundle)
                 startActivity(intent)
-            }
-            else{
+            } else {
                 Toast.makeText(applicationContext, "Erro", Toast.LENGTH_SHORT).show()
             }
         }
@@ -82,16 +81,16 @@ class MainActivity : AppCompatActivity() {
     private fun setupFabs() {
         binding.apply {
             backgroundFab.setOnClickListener {
-                if(visibility){
+                if (visibility) {
                     allGone()
                     visibility = false
                 }
             }
             fabDefault.setOnClickListener {
-                if(visibility) {
+                if (visibility) {
                     allGone()
                     visibility = false
-                }else{
+                } else {
                     allVisible()
                     visibility = true
                 }
@@ -147,13 +146,28 @@ class MainActivity : AppCompatActivity() {
 
     private fun changeFabDefault(language: String) {
         if (language == Constants.ENGLISH) {
-            binding.fabDefault.setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(this, R.drawable.ic_english_flag),null,null,null)
+            binding.fabDefault.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                AppCompatResources.getDrawable(
+                    this,
+                    R.drawable.ic_english_flag
+                ), null, null, null
+            )
             binding.fabDefault.text = "english"
         } else if (language == Constants.SPANISH) {
-            binding.fabDefault.setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(this, R.drawable.ic_spanish_flag),null,null,null)
+            binding.fabDefault.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                AppCompatResources.getDrawable(
+                    this,
+                    R.drawable.ic_spanish_flag
+                ), null, null, null
+            )
             binding.fabDefault.text = "spanish"
         } else {
-            binding.fabDefault.setCompoundDrawablesRelativeWithIntrinsicBounds(AppCompatResources.getDrawable(this, R.drawable.ic_french_flag),null,null,null)
+            binding.fabDefault.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                AppCompatResources.getDrawable(
+                    this,
+                    R.drawable.ic_french_flag
+                ), null, null, null
+            )
             binding.fabDefault.text = "french"
         }
         binding.apply {
@@ -162,5 +176,14 @@ class MainActivity : AppCompatActivity() {
         visibility = false
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.textSearch.setText("")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 
 }

@@ -6,7 +6,6 @@ object Constants {
     const val APP_KEY = "87ea1baedfcd553652d3fa4d7f32dbdf"
 
     const val WORD = "word"
-
     const val LANGUAGE = "language"
     const val ENGLISH = "english"
     const val SPANISH = "spanish"

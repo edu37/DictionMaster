@@ -7,16 +7,17 @@
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:context=".ui.view.ResultActivity">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_word"
             android:layout_width="match_parent"
-            android:layout_marginStart="30dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="120dp"
             android:text="Education"
@@ -62,7 +63,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardview_definition"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="240dp"
             android:layout_margin="30dp"
             app:cardBackgroundColor="#D2E7ED"
             app:cardCornerRadius="32dp"
@@ -82,16 +83,27 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_definition"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="70dp" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="70dp"
+                android:visibility="visible" />
 
         </com.google.android.material.card.MaterialCardView>
+
+        <ProgressBar
+            android:id="@+id/progress_circular"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:elevation="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardview_example"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="240dp"
             android:layout_margin="30dp"
             app:cardBackgroundColor="#D2E7ED"
             app:cardCornerRadius="32dp"
@@ -111,8 +123,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_example"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginTop="70dp" />
 
 
@@ -120,15 +132,16 @@
 
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_search"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_margin="30dp"
             android:text="New Search"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardview_example"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/cardview_example" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

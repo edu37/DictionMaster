@@ -6,5 +6,5 @@ import java.io.Serializable
 data class APIModelResponse(
 
     @SerializedName("results")
-    val results: List<HeadwordEntryModel>
+    val results: MutableList<HeadwordEntryModel>?
 ):Serializable

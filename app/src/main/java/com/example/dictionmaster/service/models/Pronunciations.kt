@@ -6,9 +6,9 @@ import java.io.Serializable
 data class Pronunciations(
 
     @SerializedName("audioFile")
-    val audioFile: String,
+    val audioFile: String?,
 
     @SerializedName("phoneticSpelling")
-    val phoneticSpelling: String
+    val phoneticSpelling: String?
 
 ) : Serializable

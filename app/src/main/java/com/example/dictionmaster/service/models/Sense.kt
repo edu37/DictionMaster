@@ -6,9 +6,9 @@ import java.io.Serializable
 data class Sense(
 
     @SerializedName("definitions")
-    val definitions: List<String>,
+    val definitions: MutableList<String>?,
 
     @SerializedName("examples")
-    val examples: List<Examples>
+    val examples: MutableList<Examples>?
 
 ):Serializable

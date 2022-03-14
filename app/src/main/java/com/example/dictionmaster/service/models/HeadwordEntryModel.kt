@@ -13,5 +13,5 @@ data class HeadwordEntryModel(
     val id: String,
 
     @SerializedName("lexicalEntries")
-    val lexicalEntries: List<LexicalEntry>,
+    val lexicalEntries: MutableList<LexicalEntry>?,
 ) : Serializable

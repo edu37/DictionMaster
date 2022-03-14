@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dictionmaster.databinding.ActivityResultBinding
+import com.example.dictionmaster.service.models.APIModelResponse
 import com.example.dictionmaster.ui.state.ResourceState
 import com.example.dictionmaster.ui.view.adapter.DefinitionAdapter
 import com.example.dictionmaster.ui.view.adapter.ExampleAdapter
@@ -31,7 +32,7 @@ class ResultActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private lateinit var player: MediaPlayer
-    private var audioFile = ""
+    private var mAudioFile = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,11 +44,11 @@ class ResultActivity : AppCompatActivity() {
         loadData()
         setupRecycler()
         setupCollect()
-
         setupButtons()
 
     }
 
+    // Carrega os dados da primeira activity e manda para o viewModel
     private fun loadData() {
         val bundle = intent.extras
         val word: String = bundle!!.getString(Constants.WORD).toString()
@@ -61,7 +62,7 @@ class ResultActivity : AppCompatActivity() {
             try {
                 player = MediaPlayer()
                 player.setAudioStreamType(AudioManager.STREAM_MUSIC)
-                player.setDataSource(audioFile)
+                player.setDataSource(mAudioFile)
 
                 player.prepare()
                 player.start()
@@ -78,22 +79,7 @@ class ResultActivity : AppCompatActivity() {
         mViewMoldel.data.collect { resource ->
             when (resource) {
                 is ResourceState.Success -> {
-                    resource.data?.let {
-                        mExampleAdapter.examples =
-                            it.results[0].lexicalEntries[0].entries[0].senses[0].examples
-                        mDefinitionAdapter.sense = it.results[0].lexicalEntries[0].entries[0].senses
-                        binding.textPronunciation.text =
-                            it.results[0].lexicalEntries[0].entries[0].pronunciations[0].phoneticSpelling
-                        audioFile =
-                            it.results[0].lexicalEntries[0].entries[0].pronunciations[0].audioFile
-                        binding.progressCircular.visibility = View.GONE
-
-                        binding.textWord.visibility = View.VISIBLE
-                        binding.cardviewDefinition.visibility = View.VISIBLE
-                        binding.cardviewExample.visibility = View.VISIBLE
-                        binding.cardviewPronunciation.visibility = View.VISIBLE
-                        binding.buttonSearch.visibility = View.VISIBLE
-                    }
+                    handleState(resource)
                 }
                 is ResourceState.Error -> {
                     Toast.makeText(applicationContext, "Um erro ocorreu", Toast.LENGTH_SHORT)
@@ -111,6 +97,41 @@ class ResultActivity : AppCompatActivity() {
                 }
                 else -> {}
             }
+        }
+    }
+
+    // Cuida da resposta retornada pela API, garantindo também que nenhum valor null seja colocado nas views
+    private fun handleState(resource: ResourceState.Success<APIModelResponse>) {
+        resource.data?.let { it ->
+            it.results?.let { results ->
+                results[0].lexicalEntries?.let { lexicalEntries ->
+                    lexicalEntries[0].entries?.let { entries ->
+                        entries[0].senses?.let { senses ->
+                            senses[0].examples?.let { examples ->
+                                mExampleAdapter.examples = examples
+                                binding.cardviewExample.visibility = View.VISIBLE
+                            }
+                            senses[0].definitions?.let {
+                                mDefinitionAdapter.sense = senses
+                                binding.cardviewDefinition.visibility = View.VISIBLE
+                            }
+                        }
+                        entries[0].pronunciations?.let { pronun ->
+                            pronun[0].audioFile?.let {
+                                mAudioFile = it
+                                binding.cardviewPronunciation.visibility = View.VISIBLE
+                            }
+                            pronun[0].phoneticSpelling?.let {
+                                binding.textPronunciation.text = it
+                            }
+                        }
+                        binding.progressCircular.visibility = View.GONE
+                    }
+                }
+            }
+
+            binding.textWord.visibility = View.VISIBLE
+            binding.buttonSearch.visibility = View.VISIBLE
         }
     }
 

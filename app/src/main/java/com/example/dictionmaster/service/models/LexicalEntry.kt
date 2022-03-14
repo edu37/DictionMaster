@@ -6,5 +6,5 @@ import java.io.Serializable
 data class LexicalEntry(
 
     @SerializedName("entries")
-    val entries: List<Entry>
+    val entries: MutableList<Entry>?
 ) : Serializable

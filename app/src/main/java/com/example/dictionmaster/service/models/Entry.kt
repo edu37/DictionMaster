@@ -5,9 +5,9 @@ import java.io.Serializable
 
 data class Entry(
     @SerializedName("pronunciations")
-    val pronunciations: List<Pronunciations>,
+    val pronunciations: MutableList<Pronunciations>?,
 
     @SerializedName("senses")
-    val senses: List<Sense>
+    val senses: MutableList<Sense>?
 
 ) : Serializable

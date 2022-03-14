@@ -6,5 +6,5 @@ import java.io.Serializable
 data class Examples(
 
     @SerializedName("text")
-    val text: String
+    val text: String?
 ) : Serializable

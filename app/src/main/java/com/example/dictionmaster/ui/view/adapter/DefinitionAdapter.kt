@@ -25,7 +25,7 @@ class DefinitionAdapter : RecyclerView.Adapter<DefinitionAdapter.DefinitionViewH
 
     private val differ = AsyncListDiffer(this, differCallBack)
 
-    var sense: List<Sense>
+    var sense: List<Sense>?
         get() = differ.currentList
         set(value) = differ.submitList(value)
 
@@ -41,8 +41,7 @@ class DefinitionAdapter : RecyclerView.Adapter<DefinitionAdapter.DefinitionViewH
 
         holder.binding.apply {
             try {
-                if (sense[position].definitions[0].isNotEmpty())
-                    textData.text = sense[position].definitions[0]
+                    textData.text = sense!![position].definitions!![0]
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -50,7 +49,6 @@ class DefinitionAdapter : RecyclerView.Adapter<DefinitionAdapter.DefinitionViewH
     }
 
     override fun getItemCount(): Int {
-
-        return sense.size
+        return sense!!.size
     }
 }

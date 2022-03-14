@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.view.ResultActivity">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_word"
+            android:layout_width="match_parent"
+            android:layout_marginStart="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="120dp"
+            android:text="Education"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardview_pronunciation"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="30dp"
+            app:cardBackgroundColor="#D2E7ED"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_word">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/audio_pronunciation"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="25dp"
+                android:backgroundTint="#5BD6FD"
+                app:srcCompat="@drawable/ic_pronunciation" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_pronunciation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="90dp"
+                android:layout_marginTop="25dp"
+                android:text="pasdkasd"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="32sp" />
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardview_definition"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="30dp"
+            app:cardBackgroundColor="#D2E7ED"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardview_pronunciation">
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:text="Definition:"
+                android:textSize="32sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_definition"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardview_example"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="30dp"
+            app:cardBackgroundColor="#D2E7ED"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardview_definition">
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:text="Example:"
+                android:textSize="32sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_example"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp" />
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_margin="30dp"
+            android:text="New Search"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardview_example"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

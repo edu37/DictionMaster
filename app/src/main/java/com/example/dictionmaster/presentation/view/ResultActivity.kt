@@ -1,5 +1,6 @@
-package com.example.dictionmaster.ui.view
+package com.example.dictionmaster.presentation.view
 
+import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
@@ -8,22 +9,35 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dictionmaster.databinding.ActivityResultBinding
-import com.example.dictionmaster.service.models.APIModelResponse
-import com.example.dictionmaster.ui.state.ResourceState
-import com.example.dictionmaster.ui.view.adapter.DefinitionAdapter
-import com.example.dictionmaster.ui.view.adapter.ExampleAdapter
-import com.example.dictionmaster.ui.viewmodel.ResultViewModel
+import com.example.dictionmaster.data.models.APIModelResponse
+import com.example.dictionmaster.data.models.Sense
+import com.example.dictionmaster.data.models.WordModel
+import com.example.dictionmaster.presentation.state.ResourceState
+import com.example.dictionmaster.presentation.view.adapter.DefinitionAdapter
+import com.example.dictionmaster.presentation.view.adapter.ExampleAdapter
+import com.example.dictionmaster.presentation.view.adapter.PurchaseActivity
+import com.example.dictionmaster.presentation.viewmodel.ResultViewModel
 import com.example.dictionmaster.util.Constants
+import com.example.dictionmaster.util.Constants.USERS
+import com.example.dictionmaster.util.Constants.WORDS
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.lang.Exception
 
 @AndroidEntryPoint
 class ResultActivity : AppCompatActivity() {
 
     private val mViewMoldel: ResultViewModel by viewModels()
+
+    private val db by lazy { Firebase.firestore }
+    private val auth by lazy { Firebase.auth }
 
     private val mExampleAdapter by lazy { ExampleAdapter() }
     private val mDefinitionAdapter by lazy { DefinitionAdapter() }
@@ -32,7 +46,7 @@ class ResultActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private lateinit var player: MediaPlayer
-    private var mAudioFile = ""
+    private var mAudioFile: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +77,6 @@ class ResultActivity : AppCompatActivity() {
                 player = MediaPlayer()
                 player.setAudioStreamType(AudioManager.STREAM_MUSIC)
                 player.setDataSource(mAudioFile)
-
                 player.prepare()
                 player.start()
             } catch (e: Exception) {
@@ -82,10 +95,17 @@ class ResultActivity : AppCompatActivity() {
                     handleState(resource)
                 }
                 is ResourceState.Error -> {
-                    Toast.makeText(applicationContext, "Um erro ocorreu", Toast.LENGTH_SHORT)
-                        .show()
+                    if (resource.message == Constants.PURCHASE) {
+                        startActivity(Intent(this@ResultActivity, PurchaseActivity::class.java))
+                        finish()
+                    } else if (resource.message == Constants.GET_FROM_DATABASE) {
+                        handleDatabase()
+                    } else {
+                        Toast.makeText(applicationContext, "Um erro ocorreu", Toast.LENGTH_SHORT)
+                            .show()
+                        finish()
+                    }
                     binding.progressCircular.visibility = View.GONE
-                    finish()
                 }
                 is ResourceState.Loading -> {
                     binding.progressCircular.visibility = View.VISIBLE
@@ -98,6 +118,27 @@ class ResultActivity : AppCompatActivity() {
                 else -> {}
             }
         }
+    }
+
+    private fun handleDatabase() {
+        db.collection(USERS).document(auth.uid!!).collection(WORDS)
+            .addSnapshotListener { documentos, _ ->
+                if (documentos != null) {
+                    for (documento in documentos.documentChanges) {
+                        val wordModel = documento.document.toObject(WordModel::class.java)
+                        wordModel.word?.let {
+                            binding.textWord.text = it
+                        }
+                        wordModel.pronunciation?.let {
+                            binding.textPronunciation.text = it
+                        }
+                        wordModel.audioFile?.let {
+                            binding.cardviewPronunciation.visibility = View.VISIBLE
+                            mAudioFile = it
+                        }
+                    }
+                }
+            }
     }
 
     // Cuida da resposta retornada pela API, garantindo também que nenhum valor null seja colocado nas views

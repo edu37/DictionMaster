@@ -1,4 +1,4 @@
-package com.example.dictionmaster.service.models
+package com.example.dictionmaster.data.models
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

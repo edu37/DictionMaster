@@ -1,6 +1,6 @@
 package com.example.dictionmaster.di
 
-import com.example.dictionmaster.service.remote.ServiceAPI
+import com.example.dictionmaster.data.remote.ServiceAPI
 import com.example.dictionmaster.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -16,7 +16,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object Module {
-
     @Singleton
     @Provides
     fun provideHttpClient(): OkHttpClient {

@@ -1,4 +1,4 @@
-package com.example.dictionmaster.ui.view.adapter
+package com.example.dictionmaster.presentation.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionmaster.databinding.ItemviewBinding
-import com.example.dictionmaster.service.models.Examples
+import com.example.dictionmaster.data.models.Examples
 
 class ExampleAdapter : RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder>() {
     inner class ExampleViewHolder(val binding: ItemviewBinding) :

@@ -1,7 +1,6 @@
-package com.example.dictionmaster.service.remote
+package com.example.dictionmaster.data.remote
 
-import com.example.dictionmaster.service.models.APIModelResponse
-import retrofit2.Call
+import com.example.dictionmaster.data.models.APIModelResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

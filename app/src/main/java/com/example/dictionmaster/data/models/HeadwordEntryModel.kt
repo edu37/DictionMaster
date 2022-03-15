@@ -1,14 +1,11 @@
-package com.example.dictionmaster.service.models
+package com.example.dictionmaster.data.models
 
-import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-@Entity(tableName = "dictionModel")
-data class HeadwordEntryModel(
 
-    @PrimaryKey
+data class HeadwordEntryModel(
     @SerializedName("id")
     val id: String,
 

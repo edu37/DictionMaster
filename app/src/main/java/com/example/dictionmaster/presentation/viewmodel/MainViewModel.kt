@@ -1,7 +1,7 @@
-package com.example.dictionmaster.ui.viewmodel
+package com.example.dictionmaster.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.dictionmaster.service.repository.DictionRepository
+import com.example.dictionmaster.data.repository.DictionRepository
 import com.example.dictionmaster.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

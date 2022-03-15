@@ -1,4 +1,4 @@
-package com.example.dictionmaster.ui.view
+package com.example.dictionmaster.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,11 +12,10 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
 import com.example.dictionmaster.R
 import com.example.dictionmaster.databinding.ActivityMainBinding
-import com.example.dictionmaster.ui.viewmodel.MainViewModel
+import com.example.dictionmaster.presentation.viewmodel.MainViewModel
 import com.example.dictionmaster.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

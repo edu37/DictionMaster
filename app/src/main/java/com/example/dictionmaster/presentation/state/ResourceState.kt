@@ -1,4 +1,4 @@
-package com.example.dictionmaster.ui.state
+package com.example.dictionmaster.presentation.state
 
 sealed class ResourceState<T>(
     val data: T? = null,

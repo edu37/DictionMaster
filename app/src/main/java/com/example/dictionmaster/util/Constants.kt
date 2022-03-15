@@ -10,4 +10,10 @@ object Constants {
     const val ENGLISH = "english"
     const val SPANISH = "spanish"
     const val FRENCH = "french"
+
+    const val GET_FROM_DATABASE = "getFromDataBase"
+    const val PURCHASE = "purchase"
+
+    const val USERS = "usuarios"
+    const val WORDS = "palavras"
 }

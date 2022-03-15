@@ -9,16 +9,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dictionmaster.databinding.ActivityResultBinding
 import com.example.dictionmaster.data.models.APIModelResponse
-import com.example.dictionmaster.data.models.Sense
 import com.example.dictionmaster.data.models.WordModel
 import com.example.dictionmaster.presentation.state.ResourceState
 import com.example.dictionmaster.presentation.view.adapter.DefinitionAdapter
 import com.example.dictionmaster.presentation.view.adapter.ExampleAdapter
-import com.example.dictionmaster.presentation.view.adapter.PurchaseActivity
 import com.example.dictionmaster.presentation.viewmodel.ResultViewModel
 import com.example.dictionmaster.util.Constants
 import com.example.dictionmaster.util.Constants.USERS
@@ -28,7 +25,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.lang.Exception
 
 @AndroidEntryPoint
@@ -98,8 +94,6 @@ class ResultActivity : AppCompatActivity() {
                     if (resource.message == Constants.PURCHASE) {
                         startActivity(Intent(this@ResultActivity, PurchaseActivity::class.java))
                         finish()
-                    } else if (resource.message == Constants.GET_FROM_DATABASE) {
-                        handleDatabase()
                     } else {
                         Toast.makeText(applicationContext, "Um erro ocorreu", Toast.LENGTH_SHORT)
                             .show()

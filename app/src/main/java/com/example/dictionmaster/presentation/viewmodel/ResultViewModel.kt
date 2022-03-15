@@ -25,7 +25,6 @@ class ResultViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val db by lazy { Firebase.firestore }
-    private val auth by lazy { Firebase.auth }
 
     private val mData =
         MutableStateFlow<ResourceState<APIModelResponse>>(ResourceState.Empty())
@@ -34,28 +33,25 @@ class ResultViewModel @Inject constructor(
     fun fetch(language: String, word: String) = viewModelScope.launch {
         mData.value = ResourceState.Loading()
         delay(1000L)
+        verifyRequests()
         safeFetch(language, word)
     }
 
-    private fun safeFetch(language: String, word: String) {
+    private suspend fun safeFetch(language: String, word: String) {
         try {
-            verifyRequests(language, word)
+            val response = repository.getData(language, word)
+            mData.value = handleResponse(response)
         } catch (e: Exception) {
             mData.value = ResourceState.Error(e.message)
         }
     }
 
-    private fun verifyRequests(language: String, word: String) {
+    private fun verifyRequests() {
         db.collection(USERS).addSnapshotListener { documentos, _ ->
             if (documentos != null) {
                 for (documento in documentos.documentChanges) {
                     val request = documento.document.toObject(RequestModel::class.java)
-                    if (request.request < 10) {
-                        viewModelScope.launch {
-                            verifyWord(language, word)
-                        }
-                    }
-                    else{
+                    if (request.request == 11) {
                         mData.value = ResourceState.Error(Constants.PURCHASE)
                     }
                 }
@@ -63,28 +59,28 @@ class ResultViewModel @Inject constructor(
         }
     }
 
-    private suspend fun verifyWord(language: String, word: String) {
-        db.collection(USERS).document(auth.uid!!)
-            .collection(WORDS).addSnapshotListener { documentos, _ ->
-                if (documentos != null) {
-                    for (documento in documentos.documentChanges) {
-                        val wordModel = documento.document.toObject(WordModel::class.java)
-                        if (wordModel.word == word) {
-                            mData.value = ResourceState.Error(Constants.GET_FROM_DATABASE)
-                        } else {
-                            viewModelScope.launch {
-                                getResponse(language, word)
-                            }
-                        }
-                    }
-                }
-            }
-    }
-
-    private suspend fun getResponse(language: String, word: String) {
-        val response = repository.getData(language, word)
-        mData.value = handleResponse(response)
-    }
+//    private suspend fun verifyWord(language: String, word: String) {
+//        db.collection(USERS).document(auth.uid!!)
+//            .collection(WORDS).addSnapshotListener { documentos, _ ->
+//                if (documentos != null) {
+//                    for (documento in documentos.documentChanges) {
+//                        val wordModel = documento.document.toObject(WordModel::class.java)
+//                        if (wordModel.word == word) {
+//                            mData.value = ResourceState.Error(Constants.GET_FROM_DATABASE)
+//                        } else {
+//                            viewModelScope.launch {
+//                                getResponse(language, word)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//    }
+//
+//    private suspend fun getResponse(language: String, word: String) {
+//        val response = repository.getData(language, word)
+//        mData.value = handleResponse(response)
+//    }
 
     private suspend fun handleResponse(response: Response<APIModelResponse>): ResourceState<APIModelResponse> {
         if (response.isSuccessful) {

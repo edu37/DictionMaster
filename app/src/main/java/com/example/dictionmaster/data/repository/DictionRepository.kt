@@ -28,27 +28,27 @@ class DictionRepository @Inject constructor(
     ) = api.getData(language, word, strictMatch)
 
     suspend fun saveResponse(response: APIModelResponse) = withContext(Dispatchers.IO) {
-        val id = response.results?.get(0)?.id?.lowercase()
-        val audiofile =
-            response.results?.get(0)?.lexicalEntries?.get(0)?.entries?.get(0)?.pronunciations?.get(0)?.audioFile
-        val pronunciation =
-            response.results?.get(0)?.lexicalEntries?.get(0)?.entries?.get(0)?.pronunciations?.get(0)?.phoneticSpelling
-        val examples =
-            response.results?.get(0)?.lexicalEntries?.get(0)?.entries?.get(0)?.senses?.get(0)?.examples
-        val definition =
-            response.results?.get(0)?.lexicalEntries?.get(0)?.entries?.get(0)?.senses?.get(0)?.definitions
-
-        val example: MutableList<String> = arrayListOf()
-        examples?.forEach { example.add(it.text.toString()) }
-        val wordModel = WordModel(id, audiofile, pronunciation, definition, example)
-        db.collection(USERS).document(auth.uid!!).collection(WORDS).document(id!!).set(wordModel)
+//        val id = response.results?.get(0)?.id?.lowercase()
+//        val audiofile =
+//            response.results?.get(0)?.lexicalEntries?.get(0)?.entries?.get(0)?.pronunciations?.get(0)?.audioFile
+//        val pronunciation =
+//            response.results?.get(0)?.lexicalEntries?.get(0)?.entries?.get(0)?.pronunciations?.get(0)?.phoneticSpelling
+//        val examples =
+//            response.results?.get(0)?.lexicalEntries?.get(0)?.entries?.get(0)?.senses?.get(0)?.examples
+//        val definition =
+//            response.results?.get(0)?.lexicalEntries?.get(0)?.entries?.get(0)?.senses?.get(0)?.definitions
+//
+//        val example: MutableList<String> = arrayListOf()
+//        examples?.forEach { example.add(it.text.toString()) }
+//        val wordModel = WordModel(id, audiofile, pronunciation, definition, example)
+//        db.collection(USERS).document(auth.uid!!).collection(WORDS).document(id!!).set(wordModel)
         db.collection(USERS).document(auth.uid!!).update("request", FieldValue.increment(1))
     }
 
 
 
     suspend fun saveUser() = withContext(Dispatchers.IO) {
-        db.collection(USERS).document(auth.uid!!).collection(WORDS).add(WordModel())
+        //db.collection(USERS).document(auth.uid!!).collection(WORDS).add(WordModel())
         db.collection(USERS).document(auth.uid!!).set(RequestModel())
     }
 

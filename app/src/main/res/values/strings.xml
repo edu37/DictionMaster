@@ -17,4 +17,6 @@
     <string name="language_french">French</string>
     <string name="search">Search</string>
     <string name="type_a_word">Type a word…</string>
+    <string name="subscribe">subscribe</string>
+    <string name="login_com_o_google">Login com o Google</string>
 </resources>

@@ -34,6 +34,7 @@ class LoginActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
         super.onCreate(savedInstanceState)
         _binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.hide()
 
         configureGoogleSignIn()
 
@@ -86,7 +87,7 @@ class LoginActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
                 }
             }
             .addOnFailureListener(this) { task ->
-                Toast.makeText(this, "F", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
             }
     }
 

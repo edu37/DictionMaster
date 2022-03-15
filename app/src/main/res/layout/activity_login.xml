@@ -7,11 +7,34 @@
     android:orientation="vertical"
     tools:context=".presentation.view.LoginActivity">
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:srcCompat="@drawable/ic_title"
+        android:layout_gravity="center"/>
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_com_o_google"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:textSize="16sp"/>
+
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/button_login"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Google"
+        android:textStyle="bold"
+        android:backgroundTint="#5BD6FD"
+        android:textColor="#F6F2EE"
+        android:gravity="center"/>
+
+
 
 </LinearLayout>
